@@ -286,7 +286,7 @@ class FullFeatureTest:
         url = "https://ark.cn-beijing.volces.com/api/v3/chat/completions"
         
         payload = {
-            "model": "doubao-seed-vision",
+            "model": "doubao-seed-1-6-vision-250815",
             "messages": [
                 {
                     "role": "user",
