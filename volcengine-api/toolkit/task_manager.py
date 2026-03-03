@@ -4,7 +4,7 @@ Task manager for Volcengine API Skill.
 Manages task lifecycle: create, update, query, delete.
 """
 
-from typing import Optional, List, Dict, Any
+from typing import Optional, List, Dict, Any, Union
 from datetime import datetime
 import uuid
 from toolkit.models.base import TaskStatus, TaskType
@@ -46,7 +46,7 @@ class TaskManager:
     def create_task(
         self,
         task_type: TaskType,
-        params: TaskParams
+        params: Union[Dict[str, Any], TaskParams]  # Accept dict or TaskParams
     ) -> TaskInfo:
         """
         Create new task.
@@ -208,11 +208,13 @@ class TaskManager:
         
         return result
     
-    def _validate_params(self, task_type: TaskType, params: TaskParams) -> Any:
+    def _validate_params(self, task_type: TaskType, params: Union[Dict[str, Any], TaskParams]) -> Any:
         """Validate task parameters."""
         # Convert params to dict for validation
-        params_dict = params.model_dump()
-        
+        if hasattr(params, 'model_dump'):
+            params_dict = params.model_dump()
+        else:
+            params_dict = params  # Already a dict
         if task_type in [TaskType.IMAGE_GENERATION, TaskType.IMAGE_EDIT]:
             return Validator.validate_image_generation_params(**params_dict)
         elif task_type in [TaskType.VIDEO_T2V, TaskType.VIDEO_I2V]:
