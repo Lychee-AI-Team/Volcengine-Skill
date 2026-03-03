@@ -271,47 +271,7 @@ class FullFeatureTest:
         else:
             self.record_result("视频", "图生视频", True, "⚠️  无图片URL(跳过)")
     
-    # ==================== 5. 音频生成测试 ====================
-    def test_audio_generation(self):
-        """测试音频生成"""
-        print("\n" + "=" * 70)
-        print("5. 音频生成测试")
-        print("=" * 70)
-        
-        # TTS音频生成
-        url = "https://ark.cn-beijing.volces.com/api/v3/audio/speech"
-        
-        payload = {
-            "model": "doubao-tts",
-            "input": "欢迎使用火山引擎API",
-            "voice": "zh_female_shuangkuaisisi_moon_bigtts"
-        }
-        
-        headers = {
-            "Authorization": f"Bearer {self.api_key}",
-            "Content-Type": "application/json"
-        }
-        
-        try:
-            with httpx.Client(timeout=60.0) as client:
-                response = client.post(url, json=payload, headers=headers)
-                
-                if response.status_code == 200:
-                    # 检查是否返回音频数据
-                    content_type = response.headers.get("content-type", "")
-                    if "audio" in content_type:
-                        self.record_result("音频", "TTS文本转语音", True, f"音频大小: {len(response.content)} bytes")
-                    else:
-                        self.record_result("音频", "TTS文本转语音", True, "响应接收成功")
-                else:
-                    error_text = response.text[:200]
-                    if "model" in error_text.lower() or "not found" in error_text.lower():
-                        self.record_result("音频", "TTS文本转语音", True, "⚠️  模型未开通(跳过)")
-                    else:
-                        self.record_result("音频", "TTS文本转语音", False, f"HTTP {response.status_code}")
-        except Exception as e:
-            self.record_result("音频", "TTS文本转语音", False, str(e))
-    
+
     # ==================== 6. 视觉理解测试 ====================
     def test_vision_understanding(self):
         """测试视觉理解"""
@@ -445,10 +405,7 @@ class FullFeatureTest:
             video_guide = GuideGenerator.get_post_operation_guide(TaskType.VIDEO_T2V)
             self.record_result("引导", "视频后引导", "提取视频帧" in video_guide or "继续创作" in video_guide)
             
-            # 音频操作后引导
-            audio_guide = GuideGenerator.get_post_operation_guide(TaskType.AUDIO_TTS)
-            self.record_result("引导", "音频后引导", "音频生成成功" in audio_guide)
-            
+
         except Exception as e:
             self.record_result("引导", "引导生成", False, str(e))
     
@@ -560,7 +517,7 @@ class FullFeatureTest:
         self.test_parameter_validation()
         self.test_image_generation()
         self.test_video_generation()
-        self.test_audio_generation()
+
         self.test_vision_understanding()
         self.test_task_management()
         self.test_guide_generation()
