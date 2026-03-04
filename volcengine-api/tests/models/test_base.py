@@ -5,8 +5,8 @@ Tests verify the correctness of TaskStatus, TaskType enums
 and BaseModelConfig base class.
 """
 
+import json
 import pytest
-from pydantic import BaseModel
 from toolkit.models.base import TaskStatus, TaskType, BaseModelConfig
 
 
@@ -42,11 +42,12 @@ class TestTaskType:
         assert TaskType.VIDEO_I2V == "video_i2v"
         assert TaskType.VIDEO_FRAMES == "video_frames"
         assert TaskType.VIDEO_REFERENCES == "video_references"
+        assert TaskType.AUDIO_TTS == "audio_tts"
         assert TaskType.VISION_DETECTION == "vision_detection"
     
     def test_task_type_count(self):
-        """Test that TaskType has exactly 7 values."""
-        assert len(TaskType) == 7
+        """Test that TaskType has exactly 8 values."""
+        assert len(TaskType) == 8
     
     def test_task_type_is_string_enum(self):
         """Test that TaskType is a string enum."""
@@ -92,7 +93,7 @@ class TestBaseModelConfig:
         
         # Should validate types
         with pytest.raises(Exception):
-            StrictModel(count="not an int")
+            StrictModel(**json.loads('{"count": "not an int"}'))
         
         # Should accept valid data
         instance = StrictModel(count=10)

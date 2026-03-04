@@ -2,11 +2,11 @@
 智能助手 - 提供更好的用户体验
 """
 
-from typing import Dict, Any, Optional, List
+from typing import Dict, Any
 from toolkit.error_handler import (
     VolcengineError,
     AuthenticationError,
-    RateLimitError
+    RateLimitError,
     InvalidInputError
 )
 
@@ -123,9 +123,9 @@ image_url = result["data"][0]["url"]
             "video": """
 🎬 视频生成快速指南:
 1. 准备提示词: 描述视频内容和动作
-2. 指定参数: --duration,5 --resolution 720p
+2. 指定参数: --duration 5 --resolution 720p
 3. 创建任务: 使用 /contents/generations/tasks 端点
-4. 蟥询状态: 使用返回的任务ID轮询
+4. 轮询状态: 使用返回的任务ID轮询
 5. 获取结果: 任务完成后下载视频
 
 示例:
