@@ -71,7 +71,7 @@ check_config_file() {
 }
 
 optional_api_test() {
-  local answer
+  local answer cfg base_url
 
   if [[ -z "${ARK_API_KEY:-}" ]]; then
     warn "跳过可选 API 连接测试：ARK_API_KEY 未配置。"
@@ -83,14 +83,25 @@ optional_api_test() {
 
   case "$answer" in
     y|Y|yes|YES)
-      if python3 - <<'PY'
+      cfg="$HOME/.volcengine/config.yaml"
+      base_url="${VOLCENGINE_BASE_URL:-}"
+      if [[ -z "$base_url" && -f "$cfg" ]]; then
+        base_url="$(sed -n 's/^base_url: "\(.*\)"$/\1/p' "$cfg" | head -n 1)"
+      fi
+      if [[ -z "$base_url" ]]; then
+        base_url="https://ark.cn-beijing.volces.com/api/v3"
+      fi
+
+      warn "可选 API 测试使用 Base URL: $base_url"
+      if VOLCENGINE_BASE_URL="$base_url" python3 - <<'PY'
 import os
 import sys
 
 import httpx
 
 api_key = os.environ.get("ARK_API_KEY", "")
-url = "https://ark.cn-beijing.volces.com/api/v3/models"
+base_url = os.environ.get("VOLCENGINE_BASE_URL", "https://ark.cn-beijing.volces.com/api/v3").rstrip("/")
+url = f"{base_url}/models"
 headers = {"Authorization": f"Bearer {api_key}"}
 
 try:

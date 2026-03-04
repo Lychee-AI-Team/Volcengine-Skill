@@ -109,6 +109,7 @@ install_dependencies() {
 create_config_template() {
   CONFIG_DIR="${HOME}/.volcengine"
   CONFIG_FILE="${CONFIG_DIR}/config.yaml"
+  BASE_URL_VALUE="${VOLCENGINE_BASE_URL:-https://ark.cn-beijing.volces.com/api/v3}"
 
   mkdir -p "${CONFIG_DIR}"
   if [ -f "${CONFIG_FILE}" ]; then
@@ -116,12 +117,12 @@ create_config_template() {
     return
   fi
 
-  cat > "${CONFIG_FILE}" <<'CONFIG'
+  cat > "${CONFIG_FILE}" <<CONFIG
 # Volcengine API configuration template
 # Fill these values before first run.
 
 api_key: "YOUR_ARK_API_KEY"
-base_url: "https://ark.cn-beijing.volces.com/api/v3"
+base_url: "${BASE_URL_VALUE}"
 region: "cn-beijing"
 timeout: 30
 max_retries: 3
@@ -139,6 +140,7 @@ create_output_directory() {
 
 set_environment_variables_optional() {
   ENV_FILE="${HOME}/.volcengine/env.sh"
+  BASE_URL_VALUE="${VOLCENGINE_BASE_URL:-https://ark.cn-beijing.volces.com/api/v3}"
   SHELL_NAME="$(basename "${SHELL:-}")"
   SHOULD_SET_ENV='n'
 
@@ -164,6 +166,7 @@ set_environment_variables_optional() {
 
   cat > "${ENV_FILE}" <<EOF_ENV
 export ARK_API_KEY="your-api-key-here"
+export VOLCENGINE_BASE_URL="${BASE_URL_VALUE}"
 export VOLCENGINE_CONFIG="${HOME}/.volcengine/config.yaml"
 export VOLCENGINE_OUTPUT_DIR="${PROJECT_ROOT}/output"
 EOF_ENV
@@ -206,9 +209,10 @@ print_next_steps() {
   printf '     - Temporary: export ARK_API_KEY="your-real-api-key"\n'
   printf '     - Persistent (optional): edit %s\n' "${HOME}/.volcengine/env.sh"
   printf '  2) Configure: edit %s and fill real values.\n' "${HOME}/.volcengine/config.yaml"
-  printf '  3) Run quickstart: python examples/quickstart.py\n'
-  printf '  4) Verify installation: python -c "import toolkit; print(\"OK\")"\n'
-  printf '  5) Output directory: %s/output\n' "${PROJECT_ROOT}"
+  printf '  3) Optional relay base URL: export VOLCENGINE_BASE_URL="https://your-proxy/api/v3"\n'
+  printf '  4) Run quickstart: python examples/quickstart.py\n'
+  printf '  5) Verify installation: python -c "import toolkit; print(\"OK\")"\n'
+  printf '  6) Output directory: %s/output\n' "${PROJECT_ROOT}"
 }
 
 main() {

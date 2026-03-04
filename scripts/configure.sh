@@ -15,6 +15,8 @@ END_MARKER="# <<< volcengine ark_api_key <<<"
 API_KEY=""
 METHOD=""
 RC_FILE=""
+BASE_URL_DEFAULT="https://ark.cn-beijing.volces.com/api/v3"
+BASE_URL=""
 
 info() {
   printf "%bINFO%b %s\n" "$BLUE" "$NC" "$1"
@@ -82,6 +84,29 @@ prompt_api_key() {
   done
 }
 
+prompt_base_url() {
+  local input
+
+  while true; do
+    printf "请输入 Base URL（默认: %s）: " "$BASE_URL_DEFAULT"
+    read -r input
+
+    if [[ -z "$input" ]]; then
+      BASE_URL="$BASE_URL_DEFAULT"
+      pass "Base URL 使用默认值。"
+      return 0
+    fi
+
+    if [[ "$input" =~ ^https?://.+$ ]]; then
+      BASE_URL="${input%/}"
+      pass "Base URL 格式校验通过。"
+      return 0
+    fi
+
+    fail "Base URL 格式不正确，请输入 http:// 或 https:// 开头的地址。"
+  done
+}
+
 prompt_method() {
   local choice
 
@@ -131,6 +156,7 @@ write_env_config() {
     cat "$tmp_file"
     printf "\n%s\n" "$BEGIN_MARKER"
     printf "export ARK_API_KEY=\"%s\"\n" "$API_KEY"
+    printf "export VOLCENGINE_BASE_URL=\"%s\"\n" "$BASE_URL"
     printf "%s\n" "$END_MARKER"
   } > "$RC_FILE"
 
@@ -144,7 +170,7 @@ write_file_config() {
 
   cat > "$CONFIG_FILE" <<EOF
 api_key: "$API_KEY"
-base_url: "https://ark.cn-beijing.volces.com/api/v3"
+base_url: "$BASE_URL"
 timeout: 30
 max_retries: 3
 output_dir: "./output"
@@ -160,7 +186,7 @@ validate_env_config() {
     return 1
   fi
 
-  if grep -q '^export ARK_API_KEY="' "$RC_FILE"; then
+  if grep -q '^export ARK_API_KEY="' "$RC_FILE" && grep -q '^export VOLCENGINE_BASE_URL="' "$RC_FILE"; then
     pass "环境变量配置校验通过。"
     return 0
   fi
@@ -178,7 +204,7 @@ validate_file_config() {
   fi
 
   configured_key="$(sed -n 's/^api_key: "\(.*\)"$/\1/p' "$CONFIG_FILE")"
-  if [[ "${#configured_key}" -eq 36 ]]; then
+  if [[ "${#configured_key}" -eq 36 ]] && grep -q '^base_url: "http' "$CONFIG_FILE"; then
     pass "配置文件校验通过。"
     return 0
   fi
@@ -231,6 +257,7 @@ validate_configuration() {
 main() {
   info "Volcengine 配置向导启动"
   prompt_api_key
+  prompt_base_url
   prompt_method
 
   if ! apply_configuration; then
@@ -245,6 +272,7 @@ main() {
 
   printf "\n%bPASS%b 配置完成。\n" "$GREEN" "$NC"
   printf "- 已应用方式: %s\n" "$METHOD"
+  printf "- Base URL: %s\n" "$BASE_URL"
   printf "- 配置优先级: env var > project config > global config > defaults\n"
   printf "- 建议执行: source %s\n" "${RC_FILE:-~/.bashrc}"
 }
