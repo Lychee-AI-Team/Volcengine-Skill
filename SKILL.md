@@ -1,63 +1,63 @@
 # Volcengine API Skill
 
-火山引擎 API 操作 Skill，支持图像生成、视频生成和视觉理解。
+A comprehensive skill for Volcengine API operations, supporting image generation, video generation, and vision understanding.
 
-## 功能列表
+## Features
 
-### 1. 图像生成 (Seedream 4.0)
-- 文本生成图片 (Text-to-Image)
-- 图片编辑 (Image Editing)
-- 图生图 (Image-to-Image)
-- 支持多种尺寸和风格
+### 1. Image Generation (Seedream 4.0)
+- Text-to-Image
+- Image Editing
+- Image-to-Image
+- Multiple sizes and styles supported
 
-### 2. 视频生成 (Seedance 1.5)
-- 文本生成视频 (Text-to-Video)
-- 图片生成视频 (Image-to-Video)
-- 控制镜头运动
-- 支持首尾帧控制
+### 2. Video Generation (Seedance 1.5)
+- Text-to-Video
+- Image-to-Video
+- Camera motion control
+- First/last frame control
 
-### 3. 视觉理解 (Vision)
-- 图像内容分析
-- 对象检测和定位
+### 3. Vision Understanding
+- Image content analysis
+- Object detection and localization
 
-### 4. 任务管理
-- 查看生成进度
-- 下载结果
-- 管理历史记录
+### 4. Task Management
+- View generation progress
+- Download results
+- Manage history
 
 ---
 
-## 快速开始
+## Quick Start
 
-### 安装
+### Installation
 
 ```bash
-# 方式一：一键安装（推荐）
+# Option 1: One-click installation (recommended)
 ./install.sh
 
-# 方式二：Docker
+# Option 2: Docker
 docker compose up --build
 
-# 方式三：手动安装
+# Option 3: Manual installation
 pip install -r volcengine-api/requirements.txt
 ```
 
-### 配置
+### Configuration
 
 ```bash
-# 方式一：环境变量（推荐 ✅ 最安全）
+# Option 1: Environment variable (recommended ✅ most secure)
 export ARK_API_KEY="your-api-key"
 
-# 方式二：交互式配置
+# Option 2: Interactive configuration
 ./scripts/configure.sh
 
-# 方式三：配置文件
+# Option 3: Configuration file
 mkdir -p ~/.volcengine
 echo 'api_key: "your-api-key"' > ~/.volcengine/config.yaml
-chmod 600 ~/.volcengine/config.yaml  # 重要：设置安全权限
+chmod 600 ~/.volcengine/config.yaml  # Important: set secure permissions
 ```
 
-### 验证
+### Verification
 
 ```bash
 ./scripts/verify_install.sh
@@ -65,74 +65,74 @@ chmod 600 ~/.volcengine/config.yaml  # 重要：设置安全权限
 
 ---
 
-## 🔒 安全最佳实践
+## 🔒 Security Best Practices
 
-> ⚠️ **重要**: API Key 是敏感凭证，请遵循以下安全实践。
+> ⚠️ **Important**: API Keys are sensitive credentials. Please follow these security practices.
 
-### 1. 推荐的密钥管理方式
+### 1. Recommended Key Management Methods
 
-| 方式 | 安全性 | 推荐场景 |
-|------|--------|----------|
-| 环境变量 | ⭐⭐⭐⭐⭐ | **推荐** - 所有场景 |
-| 密钥管理服务 | ⭐⭐⭐⭐⭐ | 生产环境 |
-| 配置文件 (带权限) | ⭐⭐⭐ | 本地开发 |
+| Method | Security | Recommended Use Case |
+|--------|----------|---------------------|
+| Environment Variables | ⭐⭐⭐⭐⭐ | **Recommended** - All scenarios |
+| Secret Management Service | ⭐⭐⭐⭐⭐ | Production environments |
+| Config File (with permissions) | ⭐⭐⭐ | Local development |
 
-### 2. 环境变量配置（推荐）
+### 2. Environment Variable Configuration (Recommended)
 
 ```bash
-# 临时设置（当前会话）
+# Temporary (current session)
 export ARK_API_KEY="your-api-key"
 
-# 永久设置（添加到 shell 配置）
+# Permanent (add to shell config)
 echo 'export ARK_API_KEY="your-api-key"' >> ~/.bashrc
 source ~/.bashrc
 
-# 验证设置
-echo $ARK_API_KEY | head -c 4  # 应显示前4个字符
+# Verify setting
+echo $ARK_API_KEY | head -c 4  # Should show first 4 characters
 ```
 
-### 3. 配置文件安全
+### 3. Configuration File Security
 
-如果必须使用配置文件存储 API Key：
+If you must use a configuration file to store API Key:
 
 ```bash
-# 创建配置目录
+# Create config directory
 mkdir -p ~/.volcengine
 
-# 创建配置文件
+# Create config file
 cat > ~/.volcengine/config.yaml << 'EOF'
 api_key: "your-api-key"
 base_url: "https://ark.cn-beijing.volces.com/api/v3"
 EOF
 
-# 设置安全权限（关键！）
-chmod 700 ~/.volcengine          # 目录：仅所有者可访问
-chmod 600 ~/.volcengine/config.yaml  # 文件：仅所有者可读写
+# Set secure permissions (critical!)
+chmod 700 ~/.volcengine          # Directory: owner access only
+chmod 600 ~/.volcengine/config.yaml  # File: owner read/write only
 ```
 
-### 4. 文件权限验证
+### 4. File Permission Verification
 
 ```bash
-# 检查目录权限（应为 drwx------ 或 700）
+# Check directory permissions (should be drwx------ or 700)
 ls -la ~ | grep .volcengine
 
-# 检查文件权限（应为 -rw------- 或 600）
+# Check file permissions (should be -rw------- or 600)
 ls -la ~/.volcengine/config.yaml
 ```
 
-### 5. 禁止事项
+### 5. Prohibited Actions
 
-| 禁止 | 原因 |
-|------|------|
-| ❌ 将 API Key 提交到 Git | 会被公开访问 |
-| ❌ 在日志中打印 API Key | 可能泄露 |
-| ❌ 在 URL 中传递 API Key | 会被记录 |
-| ❌ 硬编码 API Key | 难以轮换 |
-| ❌ 共享 API Key | 无法追踪责任 |
+| Prohibited | Reason |
+|------------|--------|
+| ❌ Committing API Key to Git | Will be publicly accessible |
+| ❌ Printing API Key in logs | May leak |
+| ❌ Passing API Key in URL | Will be logged |
+| ❌ Hardcoding API Key | Difficult to rotate |
+| ❌ Sharing API Key | Cannot track accountability |
 
-### 6. .gitignore 配置
+### 6. .gitignore Configuration
 
-确保 `.gitignore` 包含以下内容：
+Ensure `.gitignore` includes:
 
 ```gitignore
 # Volcengine config (may contain API keys)
@@ -145,249 +145,249 @@ ls -la ~/.volcengine/config.yaml
 .env.*.local
 ```
 
-### 7. 密钥轮换建议
+### 7. Key Rotation Recommendations
 
 ```bash
-# 定期更换 API Key（建议每90天）
-# 1. 在火山引擎控制台生成新密钥
-# 2. 更新环境变量或配置文件
-# 3. 验证新密钥工作正常
-# 4. 在控制台删除旧密钥
+# Rotate API Key regularly (recommended every 90 days)
+# 1. Generate new key in Volcengine console
+# 2. Update environment variable or config file
+# 3. Verify new key works correctly
+# 4. Delete old key in console
 ```
 
 ---
 
-## 使用方法
+## Usage
 
-### 图像生成
-
-```
-生成一张图片，内容是：夕阳下的海滩，有椰子树和海浪
-```
+### Image Generation
 
 ```
-生成图片，尺寸1024x768，内容是：城市夜景
-```
-
-### 视频生成
-
-```
-生成一个5秒的视频，内容是：镜头缓缓拉出，展现山景
+Generate an image: sunset beach with palm trees and waves
 ```
 
 ```
-用这张图片生成视频：https://example.com/image.jpg
+Generate image, size 1024x768, content: city night view
 ```
 
-### 视觉理解
+### Video Generation
 
 ```
-分析这张图片：https://example.com/image.jpg
-```
-
-### 任务管理
-
-```
-查看我的任务列表
+Generate a 5-second video: camera slowly pulls out, revealing mountain scenery
 ```
 
 ```
-查看任务 task-123 的状态
+Generate video from this image: https://example.com/image.jpg
+```
+
+### Vision Understanding
+
+```
+Analyze this image: https://example.com/image.jpg
+```
+
+### Task Management
+
+```
+Show my task list
 ```
 
 ```
-下载任务 task-123 的结果
+Check status of task task-123
+```
+
+```
+Download result of task task-123
 ```
 
 ---
 
-## 参数说明
+## Parameters
 
-### 图像生成参数
+### Image Generation Parameters
 
-| 参数 | 必填 | 说明 | 默认值 |
-|------|------|------|--------|
-| prompt | 是 | 图片描述 | - |
-| width | 否 | 宽度 | 1024 |
-| height | 否 | 高度 | 1024 |
-| negative_prompt | 否 | 负向提示词 | - |
-| model | 否 | 模型ID | doubao-seedream-4-0-250828 |
+| Parameter | Required | Description | Default |
+|-----------|----------|-------------|---------|
+| prompt | Yes | Image description | - |
+| width | No | Width | 1024 |
+| height | No | Height | 1024 |
+| negative_prompt | No | Negative prompt | - |
+| model | No | Model ID | doubao-seedream-4-0-250828 |
 
-### 视频生成参数
+### Video Generation Parameters
 
-| 参数 | 必填 | 说明 | 默认值 |
-|------|------|------|--------|
-| prompt | 是 | 视频描述 | - |
-| duration | 否 | 时长(秒) | 5 |
-| aspect_ratio | 否 | 宽高比 | 16:9 |
-| model | 否 | 模型ID | doubao-seedance-1-5-pro-251215 |
+| Parameter | Required | Description | Default |
+|-----------|----------|-------------|---------|
+| prompt | Yes | Video description | - |
+| duration | No | Duration (seconds) | 5 |
+| aspect_ratio | No | Aspect ratio | 16:9 |
+| model | No | Model ID | doubao-seedance-1-5-pro-251215 |
 
-### 视觉理解参数
+### Vision Understanding Parameters
 
-| 参数 | 必填 | 说明 | 默认值 |
-|------|------|------|--------|
-| image | 是 | 图片URL或本地路径 | - |
-| prompt | 否 | 分析指令 | - |
-| model | 否 | 模型ID | doubao-seed-1-6-vision-250815 |
+| Parameter | Required | Description | Default |
+|-----------|----------|-------------|---------|
+| image | Yes | Image URL or local path | - |
+| prompt | No | Analysis instruction | - |
+| model | No | Model ID | doubao-seed-1-6-vision-250815 |
 
 ---
 
-## 配置
+## Configuration
 
-### 环境变量
+### Environment Variables
 
-| 变量 | 说明 | 必需 |
-|------|------|------|
-| `ARK_API_KEY` | 火山引擎API密钥 | **是** |
-| `VOLCENGINE_BASE_URL` | API基础URL | 否 |
-| `VOLCENGINE_OUTPUT_DIR` | 输出目录 | 否 |
-| `VOLCENGINE_TIMEOUT` | 请求超时(秒) | 否 |
-| `VOLCENGINE_MAX_RETRIES` | 最大重试次数 | 否 |
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `ARK_API_KEY` | Volcengine API key | **Yes** |
+| `VOLCENGINE_BASE_URL` | API base URL | No |
+| `VOLCENGINE_OUTPUT_DIR` | Output directory | No |
+| `VOLCENGINE_TIMEOUT` | Request timeout (seconds) | No |
+| `VOLCENGINE_MAX_RETRIES` | Max retry attempts | No |
 
-### 配置文件
+### Configuration Files
 
-**项目配置**: `.volcengine/config.yaml`
+**Project Config**: `.volcengine/config.yaml`
 
-**全局配置**: `~/.volcengine/config.yaml`
+**Global Config**: `~/.volcengine/config.yaml`
 
 ```yaml
-# api_key: "your-api-key"  # 推荐使用环境变量
+# api_key: "your-api-key"  # Recommended: use environment variable
 base_url: "https://ark.cn-beijing.volces.com/api/v3"
 timeout: 30
 max_retries: 3
 output_dir: "./output"
 ```
 
-### 配置优先级
+### Configuration Priority
 
-1. 环境变量 `ARK_API_KEY` （**推荐**）
-2. 项目配置 `.volcengine/config.yaml`
-3. 全局配置 `~/.volcengine/config.yaml`
-4. 默认值
-
----
-
-## 模型列表
-
-| 功能 | 模型ID |
-|------|--------|
-| 图像生成 | doubao-seedream-4-0-250828 |
-| 视频生成 | doubao-seedance-1-5-pro-251215 |
-| 视觉理解 | doubao-seed-1-6-vision-250815 |
+1. Environment variable `ARK_API_KEY` (**Recommended**)
+2. Project config `.volcengine/config.yaml`
+3. Global config `~/.volcengine/config.yaml`
+4. Default values
 
 ---
 
-## 注意事项
+## Models
 
-1. **API Key 必需** - 请先设置环境变量或配置文件
-2. **图像尺寸** - 建议使用64的倍数以获得最佳效果
-3. **视频时长** - 限制在1-10秒
-4. **异步任务** - 所有生成任务都是异步的，可以查看进度
-5. **速率限制** - 注意API调用频率，避免触发限制
-6. **数据持久化** - 任务状态和历史保存在 `~/.volcengine/` 目录
-
----
-
-## 数据持久化说明
-
-本 Skill 会在以下位置存储数据：
-
-| 路径 | 内容 | 敏感性 |
-|------|------|--------|
-| `~/.volcengine/config.yaml` | 全局配置（可能含API Key） | ⚠️ 敏感 |
-| `~/.volcengine/tasks/` | 任务历史 | 普通 |
-| `~/.volcengine/state/` | 状态文件 | 普通 |
-| `./.volcengine/config.yaml` | 项目配置（可能含API Key） | ⚠️ 敏感 |
-
-**安全建议**:
-- 确保配置文件权限为 600
-- 不要将 `.volcengine/` 目录提交到版本控制
-- 定期清理不需要的历史数据
+| Feature | Model ID |
+|---------|----------|
+| Image Generation | doubao-seedream-4-0-250828 |
+| Video Generation | doubao-seedance-1-5-pro-251215 |
+| Vision Understanding | doubao-seed-1-6-vision-250815 |
 
 ---
 
-## 错误处理
+## Important Notes
 
-| 错误类型 | 说明 | 解决方案 |
-|----------|------|----------|
-| 认证错误 | API Key无效或未设置 | 检查ARK_API_KEY设置 |
-| 速率限制 | 请求过于频繁 | 等待后重试 |
-| 网络错误 | 无法连接API | 检查网络连接 |
-| 参数错误 | 参数格式不正确 | 检查参数格式 |
-| 模型错误 | 模型不可用 | 检查模型ID或联系客服 |
+1. **API Key Required** - Set environment variable or config file first
+2. **Image Dimensions** - Use multiples of 64 for best results
+3. **Video Duration** - Limited to 1-10 seconds
+4. **Async Tasks** - All generation tasks are async, check progress
+5. **Rate Limits** - Monitor API call frequency to avoid limits
+6. **Data Persistence** - Task state and history stored in `~/.volcengine/`
 
 ---
 
-## 示例工作流
+## Data Persistence
 
-### 完整图像生成流程
+This Skill stores data in the following locations:
+
+| Path | Content | Sensitivity |
+|------|---------|-------------|
+| `~/.volcengine/config.yaml` | Global config (may contain API Key) | ⚠️ Sensitive |
+| `~/.volcengine/tasks/` | Task history | Normal |
+| `~/.volcengine/state/` | State files | Normal |
+| `./.volcengine/config.yaml` | Project config (may contain API Key) | ⚠️ Sensitive |
+
+**Security Recommendations**:
+- Ensure config file permissions are 600
+- Do not commit `.volcengine/` directory to version control
+- Regularly clean up unnecessary history data
+
+---
+
+## Error Handling
+
+| Error Type | Description | Solution |
+|------------|-------------|----------|
+| Authentication Error | API Key invalid or not set | Check ARK_API_KEY setting |
+| Rate Limit | Too many requests | Wait and retry |
+| Network Error | Cannot connect to API | Check network connection |
+| Parameter Error | Invalid parameter format | Check parameter format |
+| Model Error | Model unavailable | Check model ID or contact support |
+
+---
+
+## Example Workflows
+
+### Complete Image Generation Flow
 
 ```
-1. 设置API Key:
-   设置API Key: sk-xxx
+1. Set API Key:
+   Set API Key: sk-xxx
 
-2. 生成图片:
-   生成一张图片：美丽的日落
+2. Generate image:
+   Generate an image: beautiful sunset
 
-3. 查看任务状态:
-   查看任务状态
+3. Check task status:
+   Check task status
 
-4. 下载结果:
-   下载图片到本地
+4. Download result:
+   Download image to local
 ```
 
-### 图片到视频流程
+### Image to Video Flow
 
 ```
-1. 生成初始图片:
-   生成一张图片：山景
+1. Generate initial image:
+   Generate an image: mountain scenery
 
-2. 用图片生成视频:
-   用刚生成的图片生成视频，镜头向右移动
+2. Generate video from image:
+   Generate video from the image, camera moves right
 
-3. 查看进度:
-   查看任务状态
+3. Check progress:
+   Check task status
 
-4. 下载视频:
-   下载视频到本地
+4. Download video:
+   Download video to local
 ```
 
 ---
 
-## 部署方式
+## Deployment Options
 
-| 方式 | 时间 | 适用场景 |
-|------|------|----------|
-| 脚本安装 | 2-3分钟 | 本地开发、快速体验 |
-| Docker | 3-5分钟 | 容器化环境、团队协作 |
-| 手动安装 | 5-10分钟 | 自定义环境 |
+| Method | Time | Use Case |
+|--------|------|----------|
+| Script Installation | 2-3 min | Local development, quick start |
+| Docker | 3-5 min | Containerized environment, team collaboration |
+| Manual Installation | 5-10 min | Custom environment |
 
-详细部署说明请参考 [INSTALLATION.md](./docs/INSTALLATION.md)
-
----
-
-## 相关文档
-
-- [快速开始](./docs/QUICKSTART.md) - 30秒快速上手
-- [安装指南](./docs/INSTALLATION.md) - 详细安装说明
-- [使用示例](./docs/examples.md) - 更多代码示例
-- [故障排除](./docs/troubleshooting.md) - 常见问题解决
-- [README](./README.md) - 完整项目文档
+For detailed deployment instructions, see [INSTALLATION.md](./docs/INSTALLATION.md)
 
 ---
 
-## 获取帮助
+## Documentation
+
+- [Quick Start](./docs/QUICKSTART.md) - Get started in 30 seconds
+- [Installation Guide](./docs/INSTALLATION.md) - Detailed installation instructions
+- [Examples](./docs/examples.md) - More code examples
+- [Troubleshooting](./docs/troubleshooting.md) - Common issues and solutions
+- [README](./README.md) - Full project documentation
+
+---
+
+## Get Help
 
 ```bash
-# 查看帮助脚本
+# View help script
 ./scripts/help.sh
 
-# 验证安装
+# Verify installation
 ./scripts/verify_install.sh
 ```
 
 ---
 
-**欢迎使用火山引擎API助手！**
+**Welcome to Volcengine API Assistant!**
 
-如需帮助，请说 "帮助" 或 "help"。
+For help, say "help" or "帮助".
