@@ -14,8 +14,8 @@ A comprehensive Volcengine API skill supporting image generation, video generati
 
 ```bash
 # 1. Clone repository
-git clone https://github.com/Lychee-AI-Team/seedream-skill.git
-cd seedream-skill
+git clone https://github.com/Lychee-AI-Team/Volcengine-Skill.git
+cd Volcengine-Skill
 
 # 2. Run installation script
 ./install.sh
@@ -31,8 +31,8 @@ python3 examples/quickstart.py
 
 ```bash
 # 1. Clone repository
-git clone https://github.com/Lychee-AI-Team/seedream-skill.git
-cd seedream-skill
+git clone https://github.com/Lychee-AI-Team/Volcengine-Skill.git
+cd Volcengine-Skill
 
 # 2. Configure environment
 echo "ARK_API_KEY=your-api-key" > .env
@@ -41,12 +41,28 @@ echo "ARK_API_KEY=your-api-key" > .env
 docker compose up --build
 ```
 
+### Option 3: AI Chat Installation (OpenClaw)
+
+In OpenClaw chat, send the SKILL.md URL and ask OpenClaw to install it directly.
+
+```text
+Please install this skill from SKILL.md:
+https://raw.githubusercontent.com/Lychee-AI-Team/Volcengine-Skill/main/volcengine-api/SKILL.md
+```
+
+After installation, run a smoke check command in your local workspace:
+
+```bash
+python scripts/smoke_e2e.py --help
+```
+
 ### Deployment Comparison
 
 | Method | Time | Use Case | Command |
 |--------|------|----------|---------|
 | Script | 2-3 min | Local development, quick start | `./install.sh` |
 | Docker | 3-5 min | Containerized environment, teams | `docker compose up` |
+| OpenClaw Chat | 1-2 min | Agent-driven setup, no manual shell steps | Send SKILL.md URL in OpenClaw |
 | Manual | 5-10 min | Custom environment | See [INSTALLATION.md](./docs/INSTALLATION.md) |
 
 > 📖 For detailed installation instructions, see [INSTALLATION.md](./docs/INSTALLATION.md)
@@ -86,8 +102,8 @@ For detailed installation instructions, see [INSTALLATION.md](./docs/INSTALLATIO
 
 ```bash
 # Clone repository
-git clone https://github.com/Lychee-AI-Team/seedream-skill.git
-cd seedream-skill
+git clone https://github.com/Lychee-AI-Team/Volcengine-Skill.git
+cd Volcengine-Skill
 
 # Run installation script
 ./install.sh
@@ -97,7 +113,25 @@ cd seedream-skill
 
 ```bash
 # Install dependencies
-pip install -r volcengine-api/requirements.txt
+python3 -m pip install -r volcengine-api/requirements.txt
+
+# Add toolkit package to PYTHONPATH (for interactive snippets)
+export PYTHONPATH="$(pwd)/volcengine-api:${PYTHONPATH}"
+```
+
+### AI Dialog Installation (OpenClaw)
+
+If you use OpenClaw, you can install by conversation instead of manual shell setup.
+
+```text
+Install this Volcengine skill from:
+https://raw.githubusercontent.com/Lychee-AI-Team/Volcengine-Skill/main/volcengine-api/SKILL.md
+```
+
+Then validate command availability:
+
+```bash
+python scripts/smoke_e2e.py --help
 ```
 
 ---
@@ -132,6 +166,12 @@ output_dir: "./output"
 
 ## 📖 Usage Examples
 
+Before running the Python snippets below, ensure `toolkit` is importable:
+
+```bash
+export PYTHONPATH="$(pwd)/volcengine-api:${PYTHONPATH}"
+```
+
 ### Image Generation
 
 ```python
@@ -146,11 +186,12 @@ config.set("api_key", "your-api-key")
 with VolcengineAPIClient(config) as client:
     # Generate image
     result = client.post("/images/generations", json={
+        "model": "doubao-seedream-4-0-250828",
         "prompt": "Sunset beach with palm trees and waves",
-        "width": 1024,
-        "height": 768
+        "size": "1024x1024",
+        "response_format": "url"
     })
-    print(f"Image URL: {result['url']}")
+    print(f"Image URL: {result['data'][0]['url']}")
 ```
 
 ### Video Generation
@@ -174,7 +215,11 @@ print(f"Task ID: {result['id']}")
 ### Basic Usage
 
 ```python
-from toolkit import VolcengineAPIClient, ConfigManager, TaskManager
+from toolkit.api_client import VolcengineAPIClient
+from toolkit.config import ConfigManager
+from toolkit.task_manager import TaskManager
+from toolkit.models.base import TaskType, TaskStatus
+from toolkit.utils.file_utils import FileUtils
 
 # Initialize
 config = ConfigManager()
@@ -222,7 +267,7 @@ else:
 ## 🏗️ Project Structure
 
 ```
-seedream-skill/
+Volcengine-Skill/
 ├── install.sh              # One-click installer
 ├── Dockerfile              # Docker image definition
 ├── docker-compose.yml      # Docker Compose config
@@ -234,7 +279,7 @@ seedream-skill/
 ├── examples/
 │   └── quickstart.py       # Quick start example
 ├── docs/
-│   ├── QUICKSTART.md       # Quick start guide
+│   ├── QUickstart.md       # Quick start guide
 │   ├── INSTALLATION.md     # Installation docs
 │   ├── examples.md         # Usage examples
 │   └── troubleshooting.md  # Troubleshooting
@@ -313,7 +358,7 @@ client.delete(endpoint)         # DELETE request
 manager = TaskManager(client)
 manager.create_task(type, params)          # Create task
 manager.get_task(task_id)                  # Get task
-manager.list_tasks(status=..., type=...)   # List tasks
+manager.list_tasks(status=..., task_type=...)   # List tasks
 manager.update_task_status(id, status)     # Update status
 manager.delete_task(task_id)               # Delete task
 ```
@@ -392,12 +437,12 @@ Contributions welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 ## 📞 Support
 
-- 📖 [Quick Start](./docs/QUICKSTART.md)
+- 📖 [Quick Start](./docs/QUickstart.md)
 - 📦 [Installation Guide](./docs/INSTALLATION.md)
 - 📋 [Examples](./docs/examples.md)
 - 🔧 [Troubleshooting](./docs/troubleshooting.md)
-- 🐛 [Issue Tracker](https://github.com/Lychee-AI-Team/seedream-skill/issues)
-- 💬 [Discussions](https://github.com/Lychee-AI-Team/seedream-skill/discussions)
+- 🐛 [Issue Tracker](https://github.com/Lychee-AI-Team/Volcengine-Skill/issues)
+- 💬 [Discussions](https://github.com/Lychee-AI-Team/Volcengine-Skill/discussions)
 
 ---
 

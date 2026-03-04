@@ -14,8 +14,8 @@
 
 ```bash
 # 1. 克隆仓库
-git clone https://github.com/Lychee-AI-Team/seedream-skill.git
-cd seedream-skill
+git clone https://github.com/Lychee-AI-Team/Volcengine-Skill.git
+cd Volcengine-Skill
 
 # 2. 运行安装脚本
 ./install.sh
@@ -31,8 +31,8 @@ python3 examples/quickstart.py
 
 ```bash
 # 1. 克隆仓库
-git clone https://github.com/Lychee-AI-Team/seedream-skill.git
-cd seedream-skill
+git clone https://github.com/Lychee-AI-Team/Volcengine-Skill.git
+cd Volcengine-Skill
 
 # 2. 配置环境变量
 echo "ARK_API_KEY=your-api-key" > .env
@@ -41,12 +41,28 @@ echo "ARK_API_KEY=your-api-key" > .env
 docker compose up --build
 ```
 
+### 方式三：AI 对话安装（OpenClaw）
+
+在 OpenClaw 对话中发送 SKILL.md 地址，让 OpenClaw 自动完成安装。
+
+```text
+请从以下 SKILL.md 安装该技能：
+https://raw.githubusercontent.com/Lychee-AI-Team/Volcengine-Skill/main/volcengine-api/SKILL.md
+```
+
+安装完成后，在本地工作区执行冒烟检查：
+
+```bash
+python scripts/smoke_e2e.py --help
+```
+
 ### 部署方式对比
 
 | 方式 | 时间 | 适用场景 | 命令 |
 |------|------|----------|------|
 | 脚本安装 | 2-3分钟 | 本地开发、快速体验 | `./install.sh` |
 | Docker | 3-5分钟 | 容器化环境、团队协作 | `docker compose up` |
+| OpenClaw 对话安装 | 1-2分钟 | Agent 自动安装、无需手动敲命令 | 在 OpenClaw 发送 SKILL.md 地址 |
 | 手动安装 | 5-10分钟 | 自定义环境 | 见 [INSTALLATION.md](./docs/INSTALLATION.md) |
 
 > 📖 详细安装说明请参考 [INSTALLATION.md](./docs/INSTALLATION.md)
@@ -86,8 +102,8 @@ docker compose up --build
 
 ```bash
 # 克隆仓库
-git clone https://github.com/Lychee-AI-Team/seedream-skill.git
-cd seedream-skill
+git clone https://github.com/Lychee-AI-Team/Volcengine-Skill.git
+cd Volcengine-Skill
 
 # 运行安装脚本
 ./install.sh
@@ -97,7 +113,25 @@ cd seedream-skill
 
 ```bash
 # 安装依赖
-pip install -r volcengine-api/requirements.txt
+python3 -m pip install -r volcengine-api/requirements.txt
+
+# 将 toolkit 包加入 PYTHONPATH（用于交互式示例）
+export PYTHONPATH="$(pwd)/volcengine-api:${PYTHONPATH}"
+```
+
+### AI 对话安装（OpenClaw）
+
+如果你使用 OpenClaw，可以通过对话方式安装，无需手动执行完整安装流程。
+
+```text
+请安装这个 Volcengine Skill：
+https://raw.githubusercontent.com/Lychee-AI-Team/Volcengine-Skill/main/volcengine-api/SKILL.md
+```
+
+然后执行命令确认可用：
+
+```bash
+python scripts/smoke_e2e.py --help
 ```
 
 ---
@@ -132,6 +166,12 @@ output_dir: "./output"
 
 ## 📖 使用示例
 
+运行下面的 Python 代码前，请先确保 `toolkit` 可导入：
+
+```bash
+export PYTHONPATH="$(pwd)/volcengine-api:${PYTHONPATH}"
+```
+
 ### 图像生成
 
 ```python
@@ -146,11 +186,12 @@ config.set("api_key", "your-api-key")
 with VolcengineAPIClient(config) as client:
     # 生成图像
     result = client.post("/images/generations", json={
+        "model": "doubao-seedream-4-0-250828",
         "prompt": "夕阳下的海滩，有椰子树和海浪",
-        "width": 1024,
-        "height": 768
+        "size": "1024x1024",
+        "response_format": "url"
     })
-    print(f"图像URL: {result['url']}")
+    print(f"图像URL: {result['data'][0]['url']}")
 ```
 
 ### 视频生成
@@ -174,7 +215,11 @@ print(f"任务ID: {result['id']}")
 ### 基础用法
 
 ```python
-from toolkit import VolcengineAPIClient, ConfigManager, TaskManager
+from toolkit.api_client import VolcengineAPIClient
+from toolkit.config import ConfigManager
+from toolkit.task_manager import TaskManager
+from toolkit.models.base import TaskType, TaskStatus
+from toolkit.utils.file_utils import FileUtils
 
 # 初始化
 config = ConfigManager()
@@ -222,7 +267,7 @@ else:
 ## 🏗️ 项目结构
 
 ```
-seedream-skill/
+Volcengine-Skill/
 ├── install.sh              # 一键安装脚本
 ├── Dockerfile              # Docker 镜像定义
 ├── docker-compose.yml      # Docker Compose 配置
@@ -234,7 +279,7 @@ seedream-skill/
 ├── examples/
 │   └── quickstart.py       # 快速开始示例
 ├── docs/
-│   ├── QUICKSTART.md       # 快速开始指南
+│   ├── QUickstart.md       # 快速开始指南
 │   ├── INSTALLATION.md     # 安装文档
 │   ├── examples.md         # 使用示例
 │   └── troubleshooting.md  # 故障排除
@@ -313,7 +358,7 @@ client.delete(endpoint)         # DELETE请求
 manager = TaskManager(client)
 manager.create_task(type, params)          # 创建任务
 manager.get_task(task_id)                  # 获取任务
-manager.list_tasks(status=..., type=...)   # 列出任务
+manager.list_tasks(status=..., task_type=...)   # 列出任务
 manager.update_task_status(id, status)     # 更新状态
 manager.delete_task(task_id)               # 删除任务
 ```
@@ -392,12 +437,12 @@ MIT License - 详见 [LICENSE](LICENSE) 文件
 
 ## 📞 支持
 
-- 📖 [快速开始](./docs/QUICKSTART.md)
+- 📖 [快速开始](./docs/QUickstart.md)
 - 📦 [安装指南](./docs/INSTALLATION.md)
 - 📋 [使用示例](./docs/examples.md)
 - 🔧 [故障排除](./docs/troubleshooting.md)
-- 🐛 [问题追踪](https://github.com/Lychee-AI-Team/seedream-skill/issues)
-- 💬 [讨论区](https://github.com/Lychee-AI-Team/seedream-skill/discussions)
+- 🐛 [问题追踪](https://github.com/Lychee-AI-Team/Volcengine-Skill/issues)
+- 💬 [讨论区](https://github.com/Lychee-AI-Team/Volcengine-Skill/discussions)
 
 ---
 
