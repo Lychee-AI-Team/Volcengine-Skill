@@ -1,63 +1,149 @@
-# Volcengine API Skill
+# 🎨 Doubao Seedream & Seedance API Skill
 
-A comprehensive skill for Volcengine API operations, supporting image generation, video generation, and vision understanding.
+> **Professional AI Generation Suite** - Powered by Doubao Seed Models
 
-## Features
+A comprehensive AI generation skill featuring **Doubao Seedream** for image generation, **Doubao Seedance** for video creation, and **Doubao Seed Vision** for visual understanding.
 
-### 1. Image Generation (Seedream 4.0)
-- Text-to-Image
-- Image Editing
-- Image-to-Image
-- Multiple sizes and styles supported
-
-### 2. Video Generation (Seedance 1.5)
-- Text-to-Video
-- Image-to-Video
-- Camera motion control
-- First/last frame control
-
-### 3. Vision Understanding
-- Image content analysis
-- Object detection and localization
-
-### 4. Task Management
-- View generation progress
-- Download results
-- Manage history
+[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
+[![Docker](https://img.shields.io/badge/docker-supported-blue.svg)](https://www.docker.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ---
 
-## Quick Start
+## 🌟 Core Features
 
-### Installation
+### 🎨 Doubao Seedream 4.0 - Image Generation
+
+**State-of-the-art text-to-image generation with exceptional quality and control.**
+
+| Feature | Description |
+|---------|-------------|
+| **Text-to-Image** | Generate stunning images from natural language descriptions |
+| **Image Editing** | Modify existing images with AI-powered editing tools |
+| **Image-to-Image** | Transform and reimagine existing images |
+| **Multi-Size Support** | Flexible dimensions (512-2048px), optimized for 64px multiples |
+| **Style Control** | Artistic styles, photorealistic, and custom aesthetics |
+
+**Model ID**: `doubao-seedream-4-0-250828`
+
+```
+Generate an image: sunset beach with palm trees and golden waves, photorealistic style
+```
+
+---
+
+### 🎬 Doubao Seedance 1.5 - Video Generation
+
+**Professional video creation with advanced camera control and motion dynamics.**
+
+| Feature | Description |
+|---------|-------------|
+| **Text-to-Video** | Create videos from text descriptions with cinematic quality |
+| **Image-to-Video** | Animate static images with natural motion |
+| **Camera Control** | Pan, zoom, dolly, and complex camera movements |
+| **Frame Control** | Define start/end frames for precise transitions |
+| **Duration Control** | 1-10 second videos with smooth motion interpolation |
+
+**Model ID**: `doubao-seedance-1-5-pro-251215`
+
+```
+Generate a 5-second video: camera slowly pulls out revealing mountain vista at dawn
+```
+
+---
+
+### 👁️ Doubao Seed Vision - Visual Understanding
+
+**Advanced image analysis and comprehension powered by multimodal AI.**
+
+| Feature | Description |
+|---------|-------------|
+| **Content Analysis** | Comprehensive image understanding and description |
+| **Object Detection** | Identify and locate objects within images |
+| **Scene Understanding** | Contextual analysis of environments and settings |
+| **Visual Q&A** | Answer questions about image content |
+
+**Model ID**: `doubao-seed-1-6-vision-250815`
+
+```
+Analyze this image: https://example.com/photo.jpg - describe the scene and identify objects
+```
+
+---
+
+## 📊 Model Comparison
+
+| Model | Type | Capabilities | Best For |
+|-------|------|--------------|----------|
+| **Seedream 4.0** | Image | Text-to-Image, Edit, Transform | Marketing, Design, Art |
+| **Seedance 1.5** | Video | Text-to-Video, Animate, Motion | Content Creation, Animation |
+| **Seed Vision** | Vision | Analysis, Detection, Q&A | Automation, Research, Apps |
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Python 3.9 or higher
+- Volcengine API Key ([Get it here](https://console.volcengine.com/ark))
+- pip or Docker
+
+### Installation (Choose One)
+
+#### Option 1: One-Click Install ⚡ (Recommended)
 
 ```bash
-# Option 1: One-click installation (recommended)
+# Clone and install
+git clone https://github.com/Lychee-AI-Team/seedream-skill.git
+cd seedream-skill
 ./install.sh
+```
 
-# Option 2: Docker
+#### Option 2: Docker 🐳
+
+```bash
+# Clone
+git clone https://github.com/Lychee-AI-Team/seedream-skill.git
+cd seedream-skill
+
+# Configure
+echo "ARK_API_KEY=your-api-key" > .env
+
+# Run
 docker compose up --build
+```
 
-# Option 3: Manual installation
+#### Option 3: Manual 🛠️
+
+```bash
+# Clone
+git clone https://github.com/Lychee-AI-Team/seedream-skill.git
+cd seedream-skill
+
+# Install dependencies
 pip install -r volcengine-api/requirements.txt
+
+# Configure
+export ARK_API_KEY="your-api-key"
 ```
 
 ### Configuration
 
 ```bash
-# Option 1: Environment variable (recommended ✅ most secure)
-export ARK_API_KEY="your-api-key"
+# Method 1: Environment Variable (Recommended ✅ Most Secure)
+export ARK_API_KEY="your-api-key-here"
 
-# Option 2: Interactive configuration
+# Method 2: Interactive Wizard
 ./scripts/configure.sh
 
-# Option 3: Configuration file
+# Method 3: Config File
 mkdir -p ~/.volcengine
 echo 'api_key: "your-api-key"' > ~/.volcengine/config.yaml
-chmod 600 ~/.volcengine/config.yaml  # Important: set secure permissions
+chmod 600 ~/.volcengine/config.yaml  # Important!
 ```
 
-### Verification
+### Verify Installation
 
 ```bash
 ./scripts/verify_install.sh
@@ -65,19 +151,124 @@ chmod 600 ~/.volcengine/config.yaml  # Important: set secure permissions
 
 ---
 
+## 📖 Usage Guide
+
+### 🎨 Image Generation
+
+**Basic Usage:**
+```
+Generate an image: sunset beach with palm trees
+```
+
+**Advanced Usage:**
+```
+Generate image with parameters:
+- Content: futuristic city skyline at night
+- Size: 1920x1080
+- Style: cyberpunk aesthetic
+- Negative prompt: blurry, low quality
+```
+
+**Parameters:**
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| prompt | string | - | Image description (required) |
+| width | int | 1024 | Width in pixels (64px multiples) |
+| height | int | 1024 | Height in pixels (64px multiples) |
+| negative_prompt | string | - | Elements to avoid |
+| model | string | doubao-seedream-4-0-250828 | Model ID |
+
+---
+
+### 🎬 Video Generation
+
+**Basic Usage:**
+```
+Generate a 5-second video: ocean waves crashing on rocks
+```
+
+**Advanced Usage:**
+```
+Generate video with parameters:
+- Content: drone shot of forest canopy
+- Duration: 8 seconds
+- Motion: slow vertical ascent
+- Aspect ratio: 16:9
+```
+
+**Parameters:**
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| prompt | string | - | Video description (required) |
+| duration | float | 5.0 | Duration in seconds (1-10) |
+| aspect_ratio | string | "16:9" | Aspect ratio (16:9, 9:16, 1:1) |
+| model | string | doubao-seedance-1-5-pro-251215 | Model ID |
+
+---
+
+### 👁️ Vision Understanding
+
+**Basic Usage:**
+```
+Analyze this image: https://example.com/image.jpg
+```
+
+**Advanced Usage:**
+```
+Analyze image with focus on:
+- Identify all objects present
+- Describe the scene composition
+- Detect any text in the image
+- Suggest improvements for photography
+```
+
+**Parameters:**
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| image | string | - | Image URL or local path (required) |
+| prompt | string | - | Analysis instructions |
+| model | string | doubao-seed-1-6-vision-250815 | Model ID |
+
+---
+
+### 📋 Task Management
+
+**View Tasks:**
+```
+Show my task list
+List all pending tasks
+```
+
+**Check Status:**
+```
+Check status of task-123
+What's the progress of my video generation?
+```
+
+**Download Results:**
+```
+Download result of task-123
+Save the generated image to output folder
+```
+
+---
+
 ## 🔒 Security Best Practices
 
-> ⚠️ **Important**: API Keys are sensitive credentials. Please follow these security practices.
+> ⚠️ **Important**: API Keys are sensitive credentials. Follow these security practices.
 
-### 1. Recommended Key Management Methods
+### ✅ Recommended Methods
 
-| Method | Security | Recommended Use Case |
-|--------|----------|---------------------|
+| Method | Security | Use Case |
+|--------|----------|----------|
 | Environment Variables | ⭐⭐⭐⭐⭐ | **Recommended** - All scenarios |
-| Secret Management Service | ⭐⭐⭐⭐⭐ | Production environments |
-| Config File (with permissions) | ⭐⭐⭐ | Local development |
+| Secret Management | ⭐⭐⭐⭐⭐ | Production environments |
+| Config File (600 permissions) | ⭐⭐⭐ | Local development |
 
-### 2. Environment Variable Configuration (Recommended)
+### 🔑 Environment Variable Setup
 
 ```bash
 # Temporary (current session)
@@ -87,168 +278,62 @@ export ARK_API_KEY="your-api-key"
 echo 'export ARK_API_KEY="your-api-key"' >> ~/.bashrc
 source ~/.bashrc
 
-# Verify setting
-echo $ARK_API_KEY | head -c 4  # Should show first 4 characters
+# Verify (should show first 4 characters)
+echo $ARK_API_KEY | head -c 4
 ```
 
-### 3. Configuration File Security
-
-If you must use a configuration file to store API Key:
+### 🔐 Config File Security
 
 ```bash
-# Create config directory
+# Create config
 mkdir -p ~/.volcengine
-
-# Create config file
 cat > ~/.volcengine/config.yaml << 'EOF'
 api_key: "your-api-key"
 base_url: "https://ark.cn-beijing.volces.com/api/v3"
 EOF
 
-# Set secure permissions (critical!)
-chmod 700 ~/.volcengine          # Directory: owner access only
-chmod 600 ~/.volcengine/config.yaml  # File: owner read/write only
+# Set permissions (CRITICAL!)
+chmod 700 ~/.volcengine
+chmod 600 ~/.volcengine/config.yaml
 ```
 
-### 4. File Permission Verification
+### ❌ Prohibited Actions
+
+| Don't Do This | Why? |
+|---------------|------|
+| ❌ Commit API Key to Git | Publicly accessible |
+| ❌ Log API Key | May leak in logs |
+| ❌ Pass in URL | Gets logged |
+| ❌ Hardcode in code | Hard to rotate |
+| ❌ Share with others | No accountability |
+
+### 🔄 Key Rotation
 
 ```bash
-# Check directory permissions (should be drwx------ or 700)
-ls -la ~ | grep .volcengine
-
-# Check file permissions (should be -rw------- or 600)
-ls -la ~/.volcengine/config.yaml
-```
-
-### 5. Prohibited Actions
-
-| Prohibited | Reason |
-|------------|--------|
-| ❌ Committing API Key to Git | Will be publicly accessible |
-| ❌ Printing API Key in logs | May leak |
-| ❌ Passing API Key in URL | Will be logged |
-| ❌ Hardcoding API Key | Difficult to rotate |
-| ❌ Sharing API Key | Cannot track accountability |
-
-### 6. .gitignore Configuration
-
-Ensure `.gitignore` includes:
-
-```gitignore
-# Volcengine config (may contain API keys)
-.volcengine/
-*.volcengine/
-
-# Environment files
-.env
-.env.local
-.env.*.local
-```
-
-### 7. Key Rotation Recommendations
-
-```bash
-# Rotate API Key regularly (recommended every 90 days)
+# Rotate every 90 days (recommended)
 # 1. Generate new key in Volcengine console
-# 2. Update environment variable or config file
-# 3. Verify new key works correctly
-# 4. Delete old key in console
+# 2. Update environment/config
+# 3. Verify new key works
+# 4. Delete old key
 ```
 
 ---
 
-## Usage
-
-### Image Generation
-
-```
-Generate an image: sunset beach with palm trees and waves
-```
-
-```
-Generate image, size 1024x768, content: city night view
-```
-
-### Video Generation
-
-```
-Generate a 5-second video: camera slowly pulls out, revealing mountain scenery
-```
-
-```
-Generate video from this image: https://example.com/image.jpg
-```
-
-### Vision Understanding
-
-```
-Analyze this image: https://example.com/image.jpg
-```
-
-### Task Management
-
-```
-Show my task list
-```
-
-```
-Check status of task task-123
-```
-
-```
-Download result of task task-123
-```
-
----
-
-## Parameters
-
-### Image Generation Parameters
-
-| Parameter | Required | Description | Default |
-|-----------|----------|-------------|---------|
-| prompt | Yes | Image description | - |
-| width | No | Width | 1024 |
-| height | No | Height | 1024 |
-| negative_prompt | No | Negative prompt | - |
-| model | No | Model ID | doubao-seedream-4-0-250828 |
-
-### Video Generation Parameters
-
-| Parameter | Required | Description | Default |
-|-----------|----------|-------------|---------|
-| prompt | Yes | Video description | - |
-| duration | No | Duration (seconds) | 5 |
-| aspect_ratio | No | Aspect ratio | 16:9 |
-| model | No | Model ID | doubao-seedance-1-5-pro-251215 |
-
-### Vision Understanding Parameters
-
-| Parameter | Required | Description | Default |
-|-----------|----------|-------------|---------|
-| image | Yes | Image URL or local path | - |
-| prompt | No | Analysis instruction | - |
-| model | No | Model ID | doubao-seed-1-6-vision-250815 |
-
----
-
-## Configuration
+## ⚙️ Configuration
 
 ### Environment Variables
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `ARK_API_KEY` | Volcengine API key | **Yes** |
-| `VOLCENGINE_BASE_URL` | API base URL | No |
-| `VOLCENGINE_OUTPUT_DIR` | Output directory | No |
-| `VOLCENGINE_TIMEOUT` | Request timeout (seconds) | No |
-| `VOLCENGINE_MAX_RETRIES` | Max retry attempts | No |
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `ARK_API_KEY` | API key (**Required**) | - |
+| `VOLCENGINE_BASE_URL` | API endpoint | `https://ark.cn-beijing.volces.com/api/v3` |
+| `VOLCENGINE_TIMEOUT` | Request timeout (s) | 30 |
+| `VOLCENGINE_MAX_RETRIES` | Max retries | 3 |
+| `VOLCENGINE_OUTPUT_DIR` | Output directory | `./output` |
 
-### Configuration Files
+### Configuration File
 
-**Project Config**: `.volcengine/config.yaml`
-
-**Global Config**: `~/.volcengine/config.yaml`
+**Location**: `~/.volcengine/config.yaml`
 
 ```yaml
 # api_key: "your-api-key"  # Recommended: use environment variable
@@ -258,136 +343,142 @@ max_retries: 3
 output_dir: "./output"
 ```
 
-### Configuration Priority
+### Priority Order
 
-1. Environment variable `ARK_API_KEY` (**Recommended**)
+1. Environment variable `ARK_API_KEY` ⭐ **Recommended**
 2. Project config `.volcengine/config.yaml`
 3. Global config `~/.volcengine/config.yaml`
 4. Default values
 
 ---
 
-## Models
-
-| Feature | Model ID |
-|---------|----------|
-| Image Generation | doubao-seedream-4-0-250828 |
-| Video Generation | doubao-seedance-1-5-pro-251215 |
-| Vision Understanding | doubao-seed-1-6-vision-250815 |
-
----
-
-## Important Notes
-
-1. **API Key Required** - Set environment variable or config file first
-2. **Image Dimensions** - Use multiples of 64 for best results
-3. **Video Duration** - Limited to 1-10 seconds
-4. **Async Tasks** - All generation tasks are async, check progress
-5. **Rate Limits** - Monitor API call frequency to avoid limits
-6. **Data Persistence** - Task state and history stored in `~/.volcengine/`
-
----
-
-## Data Persistence
-
-This Skill stores data in the following locations:
+## 💾 Data Persistence
 
 | Path | Content | Sensitivity |
 |------|---------|-------------|
-| `~/.volcengine/config.yaml` | Global config (may contain API Key) | ⚠️ Sensitive |
+| `~/.volcengine/config.yaml` | Global config | ⚠️ May contain API Key |
 | `~/.volcengine/tasks/` | Task history | Normal |
 | `~/.volcengine/state/` | State files | Normal |
-| `./.volcengine/config.yaml` | Project config (may contain API Key) | ⚠️ Sensitive |
+| `./.volcengine/config.yaml` | Project config | ⚠️ May contain API Key |
 
-**Security Recommendations**:
-- Ensure config file permissions are 600
-- Do not commit `.volcengine/` directory to version control
-- Regularly clean up unnecessary history data
+**Security Tips:**
+- Set config file permissions to 600
+- Add `.volcengine/` to `.gitignore`
+- Clean up old history regularly
 
 ---
 
-## Error Handling
+## ❌ Error Handling
 
-| Error Type | Description | Solution |
-|------------|-------------|----------|
-| Authentication Error | API Key invalid or not set | Check ARK_API_KEY setting |
+| Error | Description | Solution |
+|-------|-------------|----------|
+| Authentication | Invalid API Key | Check `ARK_API_KEY` |
 | Rate Limit | Too many requests | Wait and retry |
-| Network Error | Cannot connect to API | Check network connection |
-| Parameter Error | Invalid parameter format | Check parameter format |
-| Model Error | Model unavailable | Check model ID or contact support |
+| Network | Connection failed | Check internet |
+| Parameter | Invalid input | Check format |
+| Model | Model unavailable | Verify model ID |
 
 ---
 
-## Example Workflows
+## 📝 Example Workflows
 
-### Complete Image Generation Flow
-
-```
-1. Set API Key:
-   Set API Key: sk-xxx
-
-2. Generate image:
-   Generate an image: beautiful sunset
-
-3. Check task status:
-   Check task status
-
-4. Download result:
-   Download image to local
-```
-
-### Image to Video Flow
+### 🎨 Complete Image Generation Flow
 
 ```
-1. Generate initial image:
-   Generate an image: mountain scenery
+1. Set API Key
+   → export ARK_API_KEY="sk-xxx"
 
-2. Generate video from image:
-   Generate video from the image, camera moves right
+2. Generate Image
+   → Generate an image: serene mountain lake at sunrise
 
-3. Check progress:
-   Check task status
+3. Check Status
+   → Check task status
 
-4. Download video:
-   Download video to local
+4. Download Result
+   → Download image to ./output/
+```
+
+### 🎬 Image-to-Video Pipeline
+
+```
+1. Generate Source Image
+   → Generate an image: ancient temple in misty forest
+
+2. Animate to Video
+   → Generate video from image with slow camera push in
+
+3. Monitor Progress
+   → Check video generation status
+
+4. Export Video
+   → Download completed video
 ```
 
 ---
 
-## Deployment Options
+## 🐳 Deployment
 
-| Method | Time | Use Case |
+| Method | Time | Best For |
 |--------|------|----------|
-| Script Installation | 2-3 min | Local development, quick start |
-| Docker | 3-5 min | Containerized environment, team collaboration |
-| Manual Installation | 5-10 min | Custom environment |
+| Script Install | 2-3 min | Development, Testing |
+| Docker | 3-5 min | Production, Teams |
+| Manual | 5-10 min | Custom setups |
 
-For detailed deployment instructions, see [INSTALLATION.md](./docs/INSTALLATION.md)
-
----
-
-## Documentation
-
-- [Quick Start](./docs/QUICKSTART.md) - Get started in 30 seconds
-- [Installation Guide](./docs/INSTALLATION.md) - Detailed installation instructions
-- [Examples](./docs/examples.md) - More code examples
-- [Troubleshooting](./docs/troubleshooting.md) - Common issues and solutions
-- [README](./README.md) - Full project documentation
+📖 **Detailed Guide**: [INSTALLATION.md](./docs/INSTALLATION.md)
 
 ---
 
-## Get Help
+## 📚 Documentation
+
+| Document | Description |
+|----------|-------------|
+| [Quick Start](./docs/QUICKSTART.md) | 30-second setup guide |
+| [Installation](./docs/INSTALLATION.md) | Detailed installation |
+| [Examples](./docs/examples.md) | Code examples |
+| [Troubleshooting](./docs/troubleshooting.md) | Common issues |
+| [README](./README.md) | Full documentation |
+
+---
+
+## 🆘 Get Help
 
 ```bash
-# View help script
+# View help
 ./scripts/help.sh
 
 # Verify installation
 ./scripts/verify_install.sh
 ```
 
+**Need more help?** Say "help" or "帮助" for interactive assistance.
+
 ---
 
-**Welcome to Volcengine API Assistant!**
+## 📄 License
 
-For help, say "help" or "帮助".
+MIT License - See [LICENSE](LICENSE) file
+
+---
+
+## 🤝 Contributing
+
+Contributions welcome! See [CONTRIBUTING.md](CONTRIBUTING.md)
+
+---
+
+## 📞 Support
+
+- 🐛 [Issue Tracker](https://github.com/Lychee-AI-Team/seedream-skill/issues)
+- 💬 [Discussions](https://github.com/Lychee-AI-Team/seedream-skill/discussions)
+
+---
+
+<div align="center">
+
+**Built with ❤️ for AI Generation**
+
+**Powered by Doubao Seed Models**
+
+*Seedream • Seedance • Seed Vision*
+
+</div>
