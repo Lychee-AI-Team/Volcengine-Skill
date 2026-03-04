@@ -1,9 +1,55 @@
 # 火山引擎API Skill
 
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
+[![Docker](https://img.shields.io/badge/docker-supported-blue.svg)](https://www.docker.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-一个功能完整的火山引擎API操作Skill，支持图像生成、视频生成、音频生成和视觉理解。
+一个功能完整的火山引擎API操作Skill，支持图像生成、视频生成和视觉理解。
+
+## 🚀 快速开始（2分钟）
+
+### 方式一：脚本安装（推荐）
+
+```bash
+# 1. 克隆仓库
+git clone https://github.com/Lychee-AI-Team/seedream-skill.git
+cd seedream-skill
+
+# 2. 运行安装脚本
+./install.sh
+
+# 3. 配置 API Key
+export ARK_API_KEY="your-api-key"
+
+# 4. 运行示例
+python3 examples/quickstart.py
+```
+
+### 方式二：Docker 部署
+
+```bash
+# 1. 克隆仓库
+git clone https://github.com/Lychee-AI-Team/seedream-skill.git
+cd seedream-skill
+
+# 2. 配置环境变量
+echo "ARK_API_KEY=your-api-key" > .env
+
+# 3. 启动服务
+docker compose up --build
+```
+
+### 部署方式对比
+
+| 方式 | 时间 | 适用场景 | 命令 |
+|------|------|----------|------|
+| 脚本安装 | 2-3分钟 | 本地开发、快速体验 | `./install.sh` |
+| Docker | 3-5分钟 | 容器化环境、团队协作 | `docker compose up` |
+| 手动安装 | 5-10分钟 | 自定义环境 | 见 [INSTALLATION.md](./docs/INSTALLATION.md) |
+
+> 📖 详细安装说明请参考 [INSTALLATION.md](./docs/INSTALLATION.md)
+
+---
 
 ## ✨ 功能特性
 
@@ -19,11 +65,7 @@
 - 控制镜头运动
 - 支持首尾帧控制
 
-### 🎵 音频生成 (TTS)
-- 文本转语音
-- 支持多种音色
-
-### 👁️ 视觉理解
+### 👁️ 视觉理解 (Vision)
 - 图像内容分析
 - 对象检测和定位
 
@@ -32,16 +74,31 @@
 - 下载结果
 - 管理历史记录
 
+---
+
 ## 📦 安装
+
+详细安装说明请参考 [INSTALLATION.md](./docs/INSTALLATION.md)。
+
+### 快速安装
 
 ```bash
 # 克隆仓库
-git clone https://github.com/your-org/volcengine-api-skill.git
-cd volcengine-api-skill
+git clone https://github.com/Lychee-AI-Team/seedream-skill.git
+cd seedream-skill
 
+# 运行安装脚本
+./install.sh
+```
+
+### 手动安装
+
+```bash
 # 安装依赖
 pip install -r volcengine-api/requirements.txt
 ```
+
+---
 
 ## 🔧 配置
 
@@ -53,7 +110,7 @@ export ARK_API_KEY="your-api-key-here"
 
 ### 方式2: 配置文件
 
-创建 `.volcengine/config.yaml`:
+创建 `~/.volcengine/config.yaml`:
 
 ```yaml
 api_key: "your-api-key-here"
@@ -63,7 +120,15 @@ max_retries: 3
 output_dir: "./output"
 ```
 
-## 🚀 快速开始
+### 方式3: 交互式配置
+
+```bash
+./scripts/configure.sh
+```
+
+---
+
+## 📖 使用示例
 
 ### 图像生成
 
@@ -96,18 +161,6 @@ result = client.post("/videos/generate", json={
 })
 print(f"视频URL: {result['url']}")
 ```
-
-### 音频生成
-
-```python
-# 生成音频
-result = client.post("/audio/tts", json={
-    "text": "欢迎使用火山引擎API"
-})
-print(f"音频URL: {result['url']}")
-```
-
-## 📖 使用示例
 
 ### 基础用法
 
@@ -153,30 +206,44 @@ else:
     ...
 ```
 
+> 更多示例请参考 [examples.md](./docs/examples.md)
+
+---
+
 ## 🏗️ 项目结构
 
 ```
-volcengine-api/
-├── toolkit/
-│   ├── models/           # 数据模型
-│   │   ├── base.py       # 基础枚举和配置
-│   │   ├── task.py       # 任务模型
-│   │   └── validation.py # 验证模型
-│   ├── utils/            # 工具函数
-│   │   ├── file_utils.py # 文件操作
-│   │   ├── formatters.py # 格式化工具
-│   │   └── retry.py      # 重试逻辑
-│   ├── api_client.py     # API客户端
-│   ├── config.py         # 配置管理
-│   ├── error_handler.py  # 错误处理
-│   ├── guide_generator.py# 引导生成
-│   ├── state_manager.py  # 状态管理
-│   ├── task_manager.py   # 任务管理
-│   └── validator.py      # 参数验证
-├── tests/                # 测试套件
-├── SKILL.md              # Skill使用指南
-└── requirements.txt      # 依赖列表
+seedream-skill/
+├── install.sh              # 一键安装脚本
+├── Dockerfile              # Docker 镜像定义
+├── docker-compose.yml      # Docker Compose 配置
+├── .env.example            # 环境变量模板
+├── scripts/
+│   ├── configure.sh        # 交互式配置向导
+│   ├── verify_install.sh   # 安装验证脚本
+│   └── help.sh             # 帮助脚本
+├── examples/
+│   └── quickstart.py       # 快速开始示例
+├── docs/
+│   ├── QUICKSTART.md       # 快速开始指南
+│   ├── INSTALLATION.md     # 安装文档
+│   ├── examples.md         # 使用示例
+│   └── troubleshooting.md  # 故障排除
+└── volcengine-api/
+    ├── toolkit/            # 核心功能模块
+    │   ├── models/         # 数据模型
+    │   ├── utils/          # 工具函数
+    │   ├── api_client.py   # API 客户端
+    │   ├── config.py       # 配置管理
+    │   ├── error_handler.py# 错误处理
+    │   ├── task_manager.py # 任务管理
+    │   └── validator.py    # 参数验证
+    ├── tests/              # 测试套件
+    ├── SKILL.md            # Skill 使用指南
+    └── requirements.txt    # 依赖列表
 ```
+
+---
 
 ## 🧪 测试
 
@@ -190,6 +257,8 @@ pytest volcengine-api/tests/test_api_client.py -v
 # 测试覆盖率
 pytest volcengine-api/tests/ --cov=toolkit --cov-report=html
 ```
+
+---
 
 ## 📚 API参考
 
@@ -234,6 +303,8 @@ Validator.validate_image_generation_params(prompt, width, height)
 Validator.validate_video_generation_params(prompt, duration)
 ```
 
+---
+
 ## ⚠️ 错误处理
 
 所有错误都转换为用户友好的消息：
@@ -257,6 +328,8 @@ except InvalidInputError as e:
     print(f"参数错误: {e.message}")
 ```
 
+---
+
 ## 🔒 安全最佳实践
 
 1. **不要硬编码API密钥**
@@ -275,22 +348,31 @@ except InvalidInputError as e:
 
 3. **配置文件权限**
    ```bash
-   chmod 600 .volcengine/config.yaml
+   chmod 600 ~/.volcengine/config.yaml
    ```
+
+---
 
 ## 📄 许可证
 
 MIT License - 详见 [LICENSE](LICENSE) 文件
 
+---
+
 ## 🤝 贡献
 
 欢迎贡献！请查看 [CONTRIBUTING.md](CONTRIBUTING.md) 了解详情。
 
+---
+
 ## 📞 支持
 
-- 📖 [文档](./docs/)
-- 🐛 [问题追踪](https://github.com/your-org/volcengine-api-skill/issues)
-- 💬 [讨论区](https://github.com/your-org/volcengine-api-skill/discussions)
+- 📖 [快速开始](./docs/QUICKSTART.md)
+- 📦 [安装指南](./docs/INSTALLATION.md)
+- 📋 [使用示例](./docs/examples.md)
+- 🔧 [故障排除](./docs/troubleshooting.md)
+- 🐛 [问题追踪](https://github.com/Lychee-AI-Team/seedream-skill/issues)
+- 💬 [讨论区](https://github.com/Lychee-AI-Team/seedream-skill/discussions)
 
 ---
 
