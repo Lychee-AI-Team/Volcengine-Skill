@@ -76,6 +76,9 @@ cd Volcengine-Skill
 python3 -m pip install -r volcengine-api/requirements.txt
 export PYTHONPATH="$(pwd)/volcengine-api:${PYTHONPATH}"
 export ARK_API_KEY="your-api-key"
+
+# Optional relay/proxy base URL
+# export VOLCENGINE_BASE_URL="https://your-relay.example.com/api/v3"
 ```
 
 ## Key Scripts (Latest)
@@ -139,9 +142,10 @@ print(vision)
 ## Configuration Priority
 
 1. `ARK_API_KEY` environment variable
-2. Project config: `.volcengine/config.yaml`
-3. Global config: `~/.volcengine/config.yaml`
-4. Default values
+2. `VOLCENGINE_BASE_URL` environment variable
+3. Project config: `.volcengine/config.yaml`
+4. Global config: `~/.volcengine/config.yaml`
+5. Default values
 
 ## Security Notes
 

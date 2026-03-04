@@ -23,6 +23,9 @@ cd Volcengine-Skill
 # 3. 配置 API Key
 export ARK_API_KEY="your-api-key"
 
+# 可选：自定义中转/代理 Base URL
+# export VOLCENGINE_BASE_URL="https://your-relay.example.com/api/v3"
+
 # 4. 运行示例
 python3 examples/quickstart.py
 ```
@@ -142,6 +145,9 @@ python scripts/smoke_e2e.py --help
 
 ```bash
 export ARK_API_KEY="your-api-key-here"
+
+# 可选：中转/代理地址
+# export VOLCENGINE_BASE_URL="https://your-relay.example.com/api/v3"
 ```
 
 ### 方式2: 配置文件

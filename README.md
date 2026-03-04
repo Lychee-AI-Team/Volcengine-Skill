@@ -23,6 +23,9 @@ cd Volcengine-Skill
 # 3. Configure API Key
 export ARK_API_KEY="your-api-key"
 
+# Optional: custom relay/proxy base URL
+# export VOLCENGINE_BASE_URL="https://your-relay.example.com/api/v3"
+
 # 4. Run example
 python3 examples/quickstart.py
 ```
@@ -142,6 +145,9 @@ python scripts/smoke_e2e.py --help
 
 ```bash
 export ARK_API_KEY="your-api-key-here"
+
+# Optional relay/proxy endpoint
+# export VOLCENGINE_BASE_URL="https://your-relay.example.com/api/v3"
 ```
 
 ### Option 2: Configuration File
